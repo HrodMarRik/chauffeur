@@ -32,11 +32,16 @@ echo "⏳ Attente de Symfony..."
 sleep 15
 
 # Tester l'application
-echo "🔍 Test de l'application..."
-if curl -f http://localhost:8000; then
-  echo "✅ Test réussi !"
+echo "🔍 Test de la page d'accueil..."
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/)
+if [ "$HTTP_CODE" = "200" ]; then
+  echo "✅ Test réussi ! (HTTP $HTTP_CODE)"
+  echo "📄 Contenu de la réponse:"
+  curl -s http://localhost:8000/ | head -3
 else
-  echo "❌ Test échoué !"
+  echo "❌ Test échoué ! (HTTP $HTTP_CODE)"
+  echo "📋 Logs du conteneur:"
+  docker logs symfony-test --tail 10
 fi
 
 # Nettoyer

@@ -86,7 +86,18 @@ jobs:
         sleep 15
         
         # Tester l'application
-        curl -f http://localhost:8000 || exit 1
+        echo "🔍 Test de la page d'accueil..."
+        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/)
+        if [ "$HTTP_CODE" = "200" ]; then
+          echo "✅ Test Docker réussi ! (HTTP $HTTP_CODE)"
+          echo "📄 Contenu de la réponse:"
+          curl -s http://localhost:8000/ | head -5
+        else
+          echo "❌ Test Docker échoué ! (HTTP $HTTP_CODE)"
+          echo "📋 Logs du conteneur:"
+          docker logs symfony-test --tail 10
+          exit 1
+        fi
         
         # Nettoyer
         docker stop symfony-test test-mysql
