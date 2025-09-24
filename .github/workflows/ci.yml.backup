@@ -39,13 +39,9 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
     - name: Create database
-      env:
-        DATABASE_URL: mysql://symfony:symfony@127.0.0.1:3306/symfony?serverVersion=8.0.32&charset=utf8mb4
       run: php bin/console doctrine:database:create --if-not-exists --no-interaction
 
     - name: Run tests
-      env:
-        DATABASE_URL: mysql://symfony:symfony@127.0.0.1:3306/symfony?serverVersion=8.0.32&charset=utf8mb4
       run: php bin/console cache:clear --env=test
 
   docker:
