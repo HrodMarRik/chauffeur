@@ -1,147 +1,58 @@
-# Projet Chauffeur avec Symfony et Docker
+# 🚗 Projet Chauffeur
 
-Ce projet Symfony est configuré pour fonctionner avec Docker et est connecté à GitHub avec l'intégration continue.
+Application Symfony pour la gestion de chauffeurs avec Docker.
 
-## 🚀 Fonctionnalités
+## 🚀 Démarrage rapide
 
-- **Symfony 6.4.25** avec PHP 8.1
-- **Docker** et **Docker Compose** pour le développement et la production
-- **MySQL 8.0** comme base de données
-- **GitHub Actions** pour l'intégration continue
-- **Apache** comme serveur web
-- **Doctrine ORM** pour la gestion de la base de données
-
-## 📋 Prérequis
-
-- Docker
-- Docker Compose
-- Git
-
-## 🛠️ Installation
-
-### Développement
-
-1. Cloner le repository :
-```bash
-git clone https://github.com/HrodMarRik/chauffeur.git
-cd chauffeur
-```
-
-2. Construire et démarrer les conteneurs :
-```bash
-docker-compose up --build
-```
-
-### Production
+### Développement avec hot-reload
 
 ```bash
-docker-compose -f docker-compose.prod.yml up --build -d
+# Démarrer l'environnement de développement
+./dev.sh start
+
+# Accéder à l'application
+open http://localhost:8000
 ```
 
-## 🌐 Accès
-
-- **Application** : http://localhost:8000
-- **Page de test BD** : http://localhost:8000/products
-- **Base de données MySQL** : localhost:3307
-  - Utilisateur : `symfony`
-  - Mot de passe : `symfony`
-  - Base de données : `symfony`
-
-## 📝 Commandes utiles
+### Commandes disponibles
 
 ```bash
-# Démarrer les services
-docker-compose up -d
-
-# Arrêter les services
-docker-compose down
-
-# Voir les logs
-docker-compose logs -f
-
-# Accéder au conteneur web
-docker-compose exec web bash
-
-# Exécuter des commandes Symfony
-docker-compose exec web php bin/console cache:clear
-docker-compose exec web php bin/console doctrine:migrations:migrate
-
-# Créer une nouvelle entité
-docker-compose exec web php bin/console make:entity NomEntite
-
-# Créer une migration
-docker-compose exec web php bin/console make:migration
+./dev.sh start    # Démarrer l'environnement
+./dev.sh stop     # Arrêter l'environnement  
+./dev.sh restart  # Redémarrer l'environnement
+./dev.sh logs     # Voir les logs
+./dev.sh shell    # Accéder au shell du conteneur
+./dev.sh status   # Voir le statut des conteneurs
 ```
 
-## 🏗️ Structure du projet
+## 🛠️ Technologies
+
+- **Symfony 6.4** - Framework PHP
+- **Docker** - Containerisation
+- **MySQL 8.0** - Base de données
+- **Twig** - Moteur de templates
+
+## 📁 Structure
 
 ```
-chauffeur/
-├── .github/workflows/     # GitHub Actions CI/CD
-├── docker/               # Configuration Docker
-│   └── apache/
-├── src/                  # Code source Symfony
-│   ├── Controller/       # Contrôleurs
-│   ├── Entity/          # Entités Doctrine
-│   └── Repository/      # Repositories
-├── templates/            # Templates Twig
-├── migrations/           # Migrations Doctrine
-├── public/               # Point d'entrée web
-├── config/               # Configuration Symfony
-├── Dockerfile            # Image Docker
-├── docker-compose.yml    # Services de développement
-├── docker-compose.prod.yml # Services de production
-└── README.md
+├── src/Controller/     # Contrôleurs Symfony
+├── templates/          # Templates Twig
+├── docker/            # Configuration Docker
+├── config/            # Configuration Symfony
+├── public/            # Fichiers publics
+└── dev.sh            # Script de développement
 ```
 
-## 🔧 Configuration
+## 🔧 Développement
 
-### Variables d'environnement
+L'environnement de développement utilise des volumes Docker pour synchroniser vos modifications de code en temps réel. Aucun rebuild nécessaire !
 
-Le fichier `.env` contient la configuration de base de données :
-
-```env
-DATABASE_URL="mysql://symfony:symfony@127.0.0.1:3307/symfony?serverVersion=8.0.32&charset=utf8mb4"
-APP_ENV=dev
-APP_DEBUG=1
-```
-
-### Base de données
-
-Pour créer la base de données et exécuter les migrations :
+## 🚀 Production
 
 ```bash
-docker-compose exec web php bin/console doctrine:database:create
-docker-compose exec web php bin/console doctrine:migrations:migrate
+# Construire l'image de production
+docker build -t chauffeur-prod .
+
+# Lancer avec docker-compose
+docker-compose -f docker-compose.prod.yml up -d
 ```
-
-## 🚀 Déploiement
-
-Le projet est configuré avec GitHub Actions pour l'intégration continue. Chaque push sur la branche `main` déclenche :
-
-1. Tests PHP
-2. Construction de l'image Docker
-3. Tests de l'image Docker
-
-## 📚 Documentation
-
-- [Documentation Symfony](https://symfony.com/doc/6.4/index.html)
-- [Documentation Docker](https://docs.docker.com/)
-- [Documentation GitHub Actions](https://docs.github.com/en/actions)
-- [Documentation Doctrine](https://www.doctrine-project.org/projects/doctrine-orm/en/current/index.html)
-
-## 🤝 Contribution
-
-1. Fork le projet
-2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Commit vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-
-## 👨‍💻 Auteur
-
-**HrodMarRik** - [GitHub](https://github.com/HrodMarRik)

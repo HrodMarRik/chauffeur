@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chauffeur - Accueil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 3rem;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .feature h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .api-info {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .api-info h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+        
+        .api-endpoint {
+            background: #263238;
+            color: #4caf50;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+        }
+        
+        .status {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🚗</div>
+        <h1>Chauffeur</h1>
+        <p class="subtitle">Service de transport professionnel</p>
+        
+        <div class="status">✅ Application en cours d'exécution</div>
+        
+        <div class="api-info">
+            <h3>🔌 API Disponible</h3>
+            <p>Votre API Symfony est opérationnelle et prête à recevoir des requêtes.</p>
+            <div class="api-endpoint">
+                GET /api/ → Endpoint principal
+            </div>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>🚀 Symfony 6.4</h3>
+                <p>Framework PHP moderne et performant</p>
+            </div>
+            <div class="feature">
+                <h3>🐳 Docker</h3>
+                <p>Environnement containerisé et portable</p>
+            </div>
+            <div class="feature">
+                <h3>🗄️ MySQL</h3>
+                <p>Base de données robuste et fiable</p>
+            </div>
+            <div class="feature">
+                <h3>🔧 CI/CD</h3>
+                <p>Tests automatisés et déploiement continu</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Développé avec ❤️ par l'équipe Chauffeur</p>
+            <p>Version 1.0.0 - Environnement de développement</p>
+        </div>
+    </div>
+</body>
+</html>
+<- Created new GitHub repository: Test hot-reload: mer. 24 sept. 2025 11:22:32 CEST -->
