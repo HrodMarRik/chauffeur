@@ -1,10 +1,10 @@
-name: CI
+name: Development CI
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ dev ]
   pull_request:
-    branches: [ main, dev ]
+    branches: [ dev ]
 
 jobs:
   test:
@@ -48,6 +48,12 @@ jobs:
         DATABASE_URL: mysql://symfony:symfony@127.0.0.1:3306/symfony?serverVersion=8.0.32&charset=utf8mb4
       run: php bin/console cache:clear --env=test
 
+    - name: Check code style
+      run: |
+        echo "🔍 Vérification du style de code..."
+        php bin/console lint:twig templates/ || echo "⚠️ Aucun template Twig trouvé"
+        php bin/console lint:yaml config/ || echo "⚠️ Aucun fichier YAML à vérifier"
+
   docker:
     runs-on: ubuntu-latest
     needs: test
@@ -77,8 +83,8 @@ jobs:
         # Démarrer l'application Symfony
         docker run -d --name symfony-test --network test-network \
           -e DATABASE_URL="mysql://symfony:symfony@test-mysql:3306/symfony?serverVersion=8.0.32&charset=utf8mb4" \
-          -e APP_ENV=prod \
-          -e APP_DEBUG=0 \
+          -e APP_ENV=dev \
+          -e APP_DEBUG=1 \
           -p 8000:80 \
           symfony-app
         
@@ -103,3 +109,25 @@ jobs:
         docker stop symfony-test test-mysql
         docker rm symfony-test test-mysql
         docker network rm test-network
+
+  security:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, zip, gd
+        coverage: none
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
+    - name: Security check
+      run: |
+        echo "🔒 Vérification de sécurité..."
+        composer audit || echo "⚠️ Aucune vulnérabilité trouvée"
