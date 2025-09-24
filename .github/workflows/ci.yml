@@ -60,8 +60,35 @@ jobs:
 
     - name: Test Docker image
       run: |
-        docker run -d -p 8000:80 --name symfony-test symfony-app
-        sleep 10
+        # Créer un réseau Docker pour les tests
+        docker network create test-network
+        
+        # Démarrer MySQL dans un conteneur séparé
+        docker run -d --name test-mysql --network test-network \
+          -e MYSQL_ROOT_PASSWORD=root \
+          -e MYSQL_DATABASE=symfony \
+          -e MYSQL_USER=symfony \
+          -e MYSQL_PASSWORD=symfony \
+          mysql:8.0
+        
+        # Attendre que MySQL soit prêt
+        sleep 30
+        
+        # Démarrer l'application Symfony
+        docker run -d --name symfony-test --network test-network \
+          -e DATABASE_URL="mysql://symfony:symfony@test-mysql:3306/symfony?serverVersion=8.0.32&charset=utf8mb4" \
+          -e APP_ENV=prod \
+          -e APP_DEBUG=0 \
+          -p 8000:80 \
+          symfony-app
+        
+        # Attendre que l'application soit prête
+        sleep 15
+        
+        # Tester l'application
         curl -f http://localhost:8000 || exit 1
-        docker stop symfony-test
-        docker rm symfony-test
+        
+        # Nettoyer
+        docker stop symfony-test test-mysql
+        docker rm symfony-test test-mysql
+        docker network rm test-network

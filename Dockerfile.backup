@@ -10,9 +10,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -24,22 +22,15 @@ COPY docker/apache/000-default.conf /etc/apache2/sites-available/000-default.con
 # Définir le répertoire de travail
 WORKDIR /var/www/html
 
-# Copier les fichiers de configuration d'abord
-COPY composer.json composer.lock ./
-
-# Installer les dépendances PHP (sans dev)
-RUN composer install --no-dev --optimize-autoloader --no-scripts
-
-# Copier le reste de l'application
+# Copier les fichiers de l'application
 COPY . .
 
-# Exécuter les scripts post-installation
-RUN composer run-script post-install-cmd --no-interaction
+# Installer les dépendances PHP
+RUN composer install --no-dev --optimize-autoloader
 
 # Configurer les permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && chmod -R 777 /var/www/html/var
+    && chmod -R 755 /var/www/html
 
 # Exposer le port 80
 EXPOSE 80
