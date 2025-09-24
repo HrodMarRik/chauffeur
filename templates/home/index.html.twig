@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chauffeur - Accueil{% endblock %}
+
+{% block hero %}
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="page-title">Chauffeur</h1>
+        <p class="page-subtitle">Service de transport professionnel de qualité</p>
+        <div class="mt-4">
+            <a href="{{ path('app_chauffeurs') }}" class="btn btn-light btn-lg me-3">
+                <i class="fas fa-users"></i> Nos Chauffeurs
+            </a>
+            <a href="{{ path('app_contact') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-envelope"></i> Nous Contacter
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        {# Statistiques avec Bootstrap cards #}
+        <div class="row mb-4">
+            {% set stats = [
+                {value: stats.total_chauffeurs, label: 'Chauffeurs', icon: 'fas fa-users', color: 'primary'},
+                {value: stats.active_trajets, label: 'Trajets Actifs', icon: 'fas fa-route', color: 'success'},
+                {value: stats.completed_trajets, label: 'Trajets Terminés', icon: 'fas fa-check-circle', color: 'info'},
+                {value: stats.total_revenue|number_format(0, ',', ' '), label: 'Revenus (€)', icon: 'fas fa-euro-sign', color: 'warning'}
+            ] %}
+            
+            {% for stat in stats %}
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="{{ stat.icon }} fa-2x text-{{ stat.color }}"></i>
+                        </div>
+                        <h3 class="fw-bold text-{{ stat.color }}">{{ stat.value }}</h3>
+                        <p class="text-muted mb-0">{{ stat.label }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {# Fonctionnalités avec Bootstrap grid #}
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-star"></i> Nos Services
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for feature in features %}
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <i class="{{ feature.icon }} fa-3x text-{{ feature.color }}"></i>
+                                </div>
+                                <h5 class="card-title">{{ feature.name }}</h5>
+                                <p class="card-text text-muted">{{ feature.description }}</p>
+                                <span class="badge bg-{{ feature.color }}">
+                                    {% if feature.status == 'active' %}
+                                        <i class="fas fa-check"></i> Disponible
+                                    {% elseif feature.status == 'maintenance' %}
+                                        <i class="fas fa-tools"></i> Maintenance
+                                    {% else %}
+                                        <i class="fas fa-code"></i> Bientôt
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {# Pourquoi nous choisir #}
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-thumbs-up"></i> Pourquoi nous choisir ?
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <i class="fas fa-clock fa-2x text-primary mb-3"></i>
+                            <h5>Ponctualité</h5>
+                            <p class="text-muted">Nous respectons toujours vos horaires</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <i class="fas fa-shield-alt fa-2x text-success mb-3"></i>
+                            <h5>Sécurité</h5>
+                            <p class="text-muted">Chauffeurs expérimentés et véhicules sécurisés</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="text-center">
+                            <i class="fas fa-star fa-2x text-warning mb-3"></i>
+                            <h5>Qualité</h5>
+                            <p class="text-muted">Service premium pour votre confort</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Call to action #}
+        <div class="text-center">
+            <div class="card bg-primary text-white">
+                <div class="card-body py-5">
+                    <h3 class="card-title">Prêt à réserver votre transport ?</h3>
+                    <p class="card-text">Contactez-nous dès maintenant pour une estimation gratuite</p>
+                    <a href="{{ path('app_contact') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-phone"></i> Nous Contacter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation des cartes au survol
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}
