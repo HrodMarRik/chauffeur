@@ -27,8 +27,8 @@ WORKDIR /var/www/html
 # Copier les fichiers de configuration d'abord
 COPY composer.json composer.lock ./
 
-# Installer les dépendances PHP (sans dev)
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Installer les dépendances PHP (avec dev pour le développement)
+RUN composer install --optimize-autoloader --no-scripts
 
 # Copier le reste de l'application
 COPY . .
