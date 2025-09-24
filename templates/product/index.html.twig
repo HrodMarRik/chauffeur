@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Produits</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .product { border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 5px; }
+        .product h3 { color: #333; margin-top: 0; }
+        .price { color: #2c5aa0; font-weight: bold; font-size: 1.2em; }
+        .description { color: #666; margin: 10px 0; }
+        .created { color: #999; font-size: 0.9em; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🎉 Connexion Base de Données Réussie !</h1>
+    
+    <div class="success">
+        ✅ La connexion à la base de données MySQL fonctionne parfaitement !<br>
+        ✅ L'entité Product a été créée avec succès.<br>
+        ✅ La migration a été exécutée et la table a été créée.<br>
+        ✅ Les données sont sauvegardées et récupérées depuis la base de données.
+    </div>
+
+    <h2>Produits en base de données :</h2>
+    
+    {% if products %}
+        {% for product in products %}
+            <div class="product">
+                <h3>{{ product.name }}</h3>
+                <div class="price">Prix : {{ product.price }}€</div>
+                <div class="description">{{ product.description }}</div>
+                <div class="created">Créé le : {{ product.createdAt|date('d/m/Y H:i:s') }}</div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Aucun produit trouvé.</p>
+    {% endif %}
+
+    <hr>
+    <p><strong>Configuration :</strong></p>
+    <ul>
+        <li>Base de données : MySQL 8.0</li>
+        <li>Host : localhost:3307</li>
+        <li>Base : symfony</li>
+        <li>Utilisateur : symfony</li>
+    </ul>
+</body>
+</html>

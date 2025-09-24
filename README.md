@@ -1,4 +1,4 @@
-# Projet Symfony avec Docker
+# Projet Chauffeur avec Symfony et Docker
 
 Ce projet Symfony est configuré pour fonctionner avec Docker et est connecté à GitHub avec l'intégration continue.
 
@@ -9,6 +9,7 @@ Ce projet Symfony est configuré pour fonctionner avec Docker et est connecté �
 - **MySQL 8.0** comme base de données
 - **GitHub Actions** pour l'intégration continue
 - **Apache** comme serveur web
+- **Doctrine ORM** pour la gestion de la base de données
 
 ## 📋 Prérequis
 
@@ -22,8 +23,8 @@ Ce projet Symfony est configuré pour fonctionner avec Docker et est connecté �
 
 1. Cloner le repository :
 ```bash
-git clone https://github.com/HrodMarRik/mon-projet-symfony.git
-cd mon-projet-symfony
+git clone https://github.com/HrodMarRik/chauffeur.git
+cd chauffeur
 ```
 
 2. Construire et démarrer les conteneurs :
@@ -40,7 +41,8 @@ docker-compose -f docker-compose.prod.yml up --build -d
 ## 🌐 Accès
 
 - **Application** : http://localhost:8000
-- **Base de données MySQL** : localhost:3306
+- **Page de test BD** : http://localhost:8000/products
+- **Base de données MySQL** : localhost:3307
   - Utilisateur : `symfony`
   - Mot de passe : `symfony`
   - Base de données : `symfony`
@@ -63,16 +65,27 @@ docker-compose exec web bash
 # Exécuter des commandes Symfony
 docker-compose exec web php bin/console cache:clear
 docker-compose exec web php bin/console doctrine:migrations:migrate
+
+# Créer une nouvelle entité
+docker-compose exec web php bin/console make:entity NomEntite
+
+# Créer une migration
+docker-compose exec web php bin/console make:migration
 ```
 
 ## 🏗️ Structure du projet
 
 ```
-mon-projet-symfony/
+chauffeur/
 ├── .github/workflows/     # GitHub Actions CI/CD
 ├── docker/               # Configuration Docker
 │   └── apache/
 ├── src/                  # Code source Symfony
+│   ├── Controller/       # Contrôleurs
+│   ├── Entity/          # Entités Doctrine
+│   └── Repository/      # Repositories
+├── templates/            # Templates Twig
+├── migrations/           # Migrations Doctrine
 ├── public/               # Point d'entrée web
 ├── config/               # Configuration Symfony
 ├── Dockerfile            # Image Docker
@@ -85,10 +98,10 @@ mon-projet-symfony/
 
 ### Variables d'environnement
 
-Créez un fichier `.env.local` pour vos variables d'environnement :
+Le fichier `.env` contient la configuration de base de données :
 
 ```env
-DATABASE_URL="mysql://symfony:symfony@db:3306/symfony"
+DATABASE_URL="mysql://symfony:symfony@127.0.0.1:3307/symfony?serverVersion=8.0.32&charset=utf8mb4"
 APP_ENV=dev
 APP_DEBUG=1
 ```
@@ -115,6 +128,7 @@ Le projet est configuré avec GitHub Actions pour l'intégration continue. Chaqu
 - [Documentation Symfony](https://symfony.com/doc/6.4/index.html)
 - [Documentation Docker](https://docs.docker.com/)
 - [Documentation GitHub Actions](https://docs.github.com/en/actions)
+- [Documentation Doctrine](https://www.doctrine-project.org/projects/doctrine-orm/en/current/index.html)
 
 ## 🤝 Contribution
 
