@@ -1,0 +1,228 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chauffeur - Contact{% endblock %}
+
+{% block hero %}
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="page-title">{{ page_title }}</h1>
+        <p class="page-subtitle">{{ page_subtitle }}</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        {% if message_sent %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <strong>Message envoyé !</strong> Nous vous répondrons dans les plus brefs délais.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            {# Formulaire de contact #}
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">
+                            <i class="fas fa-envelope"></i> Envoyez-nous un message
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nom" class="form-label">Nom complet *</label>
+                                    <input type="text" class="form-control" id="nom" name="nom" 
+                                           value="{{ form_data.nom|default('') }}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           value="{{ form_data.email|default('') }}" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="telephone" class="form-label">Téléphone</label>
+                                    <input type="tel" class="form-control" id="telephone" name="telephone" 
+                                           value="{{ form_data.telephone|default('') }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="sujet" class="form-label">Sujet *</label>
+                                    <select class="form-select" id="sujet" name="sujet" required>
+                                        <option value="">Choisissez un sujet</option>
+                                        <option value="reservation" {{ form_data.sujet|default('') == 'reservation' ? 'selected' : '' }}>Réservation</option>
+                                        <option value="information" {{ form_data.sujet|default('') == 'information' ? 'selected' : '' }}>Demande d'information</option>
+                                        <option value="reclamation" {{ form_data.sujet|default('') == 'reclamation' ? 'selected' : '' }}>Réclamation</option>
+                                        <option value="partenariat" {{ form_data.sujet|default('') == 'partenariat' ? 'selected' : '' }}>Partenariat</option>
+                                        <option value="autre" {{ form_data.sujet|default('') == 'autre' ? 'selected' : '' }}>Autre</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required>{{ form_data.message|default('') }}</textarea>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane"></i> Envoyer le message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {# Informations de contact #}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marker-alt"></i> Adresse
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0">{{ contact_info.adresse }}</p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-phone"></i> Contact Direct
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Téléphone:</strong><br>
+                            <a href="tel:{{ contact_info.telephone }}" class="text-decoration-none">
+                                {{ contact_info.telephone }}
+                            </a>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Email:</strong><br>
+                            <a href="mailto:{{ contact_info.email }}" class="text-decoration-none">
+                                {{ contact_info.email }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clock"></i> Horaires
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for jour, horaire in contact_info.horaires %}
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong>{{ jour|capitalize }}:</strong>
+                            <span>{{ horaire }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Services proposés #}
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-star"></i> Nos Services
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for service in contact_info.services %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-3"></i>
+                            <span>{{ service }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {# FAQ rapide #}
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-question-circle"></i> Questions Fréquentes
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Comment réserver un chauffeur ?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Vous pouvez réserver un chauffeur en nous contactant par téléphone, email ou en remplissant le formulaire ci-dessus. Nous vous répondrons dans les 2 heures.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Quels sont vos tarifs ?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Nos tarifs varient selon le type de service, la distance et la durée. Contactez-nous pour un devis personnalisé gratuit.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Êtes-vous disponibles 24h/24 ?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Oui, nous proposons un service 24h/24 et 7j/7 pour tous vos besoins de transport.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation des cartes au survol
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chauffeur - Nos Chauffeurs{% endblock %}
+
+{% block hero %}
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="page-title">{{ page_title }}</h1>
+        <p class="page-subtitle">{{ page_subtitle }}</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        {# Statistiques des chauffeurs #}
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                        <h3 class="fw-bold text-primary">{{ stats.total_chauffeurs }}</h3>
+                        <p class="text-muted mb-0">Total Chauffeurs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+                        <h3 class="fw-bold text-success">{{ stats.chauffeurs_actifs }}</h3>
+                        <p class="text-muted mb-0">Actifs</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="fas fa-clock fa-2x text-info mb-3"></i>
+                        <h3 class="fw-bold text-info">{{ stats.chauffeurs_disponibles }}</h3>
+                        <p class="text-muted mb-0">Disponibles</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <i class="fas fa-star fa-2x text-warning mb-3"></i>
+                        <h3 class="fw-bold text-warning">{{ stats.note_moyenne }}</h3>
+                        <p class="text-muted mb-0">Note Moyenne</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Liste des chauffeurs #}
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-list"></i> Liste des Chauffeurs
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for chauffeur in chauffeurs %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h5 class="card-title mb-1">{{ chauffeur.nom }}</h5>
+                                        <p class="text-muted mb-0">{{ chauffeur.specialite }}</p>
+                                    </div>
+                                    <div class="text-end">
+                                        {% if chauffeur.disponible %}
+                                            <span class="badge bg-success">Disponible</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Indisponible</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-star text-warning me-1"></i>
+                                        <span class="fw-bold">{{ chauffeur.note }}</span>
+                                        <span class="text-muted ms-2">({{ chauffeur.trajets_completes }} trajets)</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-clock text-info me-2"></i>
+                                        <small class="text-muted">{{ chauffeur.experience }}</small>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-car text-primary me-2"></i>
+                                        <small class="text-muted">{{ chauffeur.vehicule }}</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{{ path('app_chauffeur_detail', {id: chauffeur.id}) }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-eye"></i> Voir le profil
+                                    </a>
+                                    <div class="text-end">
+                                        <small class="text-muted">{{ chauffeur.telephone }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {# Informations supplémentaires #}
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle"></i> Nos Standards
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Chauffeurs professionnels certifiés
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Véhicules haut de gamme
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Assurance complète
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Service 24h/7j
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-handshake"></i> Engagement Qualité
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-3">Nous nous engageons à vous fournir le meilleur service de transport avec des chauffeurs expérimentés et des véhicules de qualité.</p>
+                        <div class="text-center">
+                            <a href="{{ path('app_contact') }}" class="btn btn-primary">
+                                <i class="fas fa-envelope"></i> Réserver un chauffeur
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation des cartes au survol
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}

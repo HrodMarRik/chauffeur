@@ -1,0 +1,199 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chauffeur - {{ chauffeur.nom }}{% endblock %}
+
+{% block hero %}
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="page-title">{{ chauffeur.nom }}</h1>
+        <p class="page-subtitle">{{ chauffeur.specialite }}</p>
+        {% if chauffeur.disponible %}
+            <span class="badge bg-success fs-6 px-3 py-2">
+                <i class="fas fa-check-circle"></i> Disponible
+            </span>
+        {% else %}
+            <span class="badge bg-secondary fs-6 px-3 py-2">
+                <i class="fas fa-times-circle"></i> Indisponible
+            </span>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="row">
+            {# Informations principales #}
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">
+                            <i class="fas fa-user"></i> Informations Personnelles
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Nom:</strong></td>
+                                            <td>{{ chauffeur.nom }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Email:</strong></td>
+                                            <td>{{ chauffeur.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Téléphone:</strong></td>
+                                            <td>{{ chauffeur.telephone }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Expérience:</strong></td>
+                                            <td>{{ chauffeur.experience }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Spécialité:</strong></td>
+                                            <td>{{ chauffeur.specialite }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Véhicule:</strong></td>
+                                            <td>{{ chauffeur.vehicule }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Note:</strong></td>
+                                            <td>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <strong>{{ chauffeur.note }}</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Trajets:</strong></td>
+                                            <td>{{ chauffeur.trajets_completes }} terminés</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        {% if chauffeur.description %}
+                        <div class="mt-3">
+                            <h5>Description</h5>
+                            <p class="text-muted">{{ chauffeur.description }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# Disponibilité #}
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="mb-0">
+                            <i class="fas fa-calendar"></i> Disponibilité
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for jour, horaire in chauffeur.disponibilite %}
+                            <div class="col-md-6 col-lg-4 mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <strong>{{ jour|capitalize }}:</strong>
+                                    <span class="text-muted">{{ horaire }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Sidebar #}
+            <div class="col-md-4">
+                {# Langues #}
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-language"></i> Langues
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for langue in chauffeur.langues %}
+                        <span class="badge bg-light text-dark me-2 mb-2">{{ langue }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# Certifications #}
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-certificate"></i> Certifications
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for cert in chauffeur.certifications %}
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>{{ cert }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {# Actions #}
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Réserver ce chauffeur</h5>
+                        <p class="text-muted">Contactez-nous pour réserver les services de {{ chauffeur.nom }}</p>
+                        
+                        <div class="d-grid gap-2">
+                            <a href="tel:{{ chauffeur.telephone }}" class="btn btn-primary">
+                                <i class="fas fa-phone"></i> Appeler
+                            </a>
+                            <a href="mailto:{{ chauffeur.email }}" class="btn btn-outline-primary">
+                                <i class="fas fa-envelope"></i> Email
+                            </a>
+                            <a href="{{ path('app_contact') }}" class="btn btn-outline-success">
+                                <i class="fas fa-calendar-plus"></i> Réserver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Retour à la liste #}
+        <div class="text-center mt-4">
+            <a href="{{ path('app_chauffeurs') }}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste des chauffeurs
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation des cartes au survol
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}
